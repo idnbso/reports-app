@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { BranchReportService } from './branch-report/branch-report.service';
+import { BranchesReportService } from './branches-report/branches-report.service';
+import { CustomersReportService } from './customers-report/customers-report.service';
 import { ReportType } from './models/report-type.enum';
 import { ReportDTO } from './models/report.dto';
 
@@ -9,10 +10,17 @@ const DEFAULT_SEED_TOTAL_ROWS = 20;
 export class ReportService {
   private readonly reportRecrodsFactory = new Map<string, any>();
 
-  constructor(private branchReportService: BranchReportService) {
+  constructor(
+    private branchesReportService: BranchesReportService,
+    private customeresReportService: CustomersReportService,
+  ) {
     this.reportRecrodsFactory.set(
       ReportType.Branches.toLowerCase(),
-      this.branchReportService,
+      this.branchesReportService,
+    );
+    this.reportRecrodsFactory.set(
+      ReportType.Customers.toLowerCase(),
+      this.customeresReportService,
     );
   }
 
@@ -30,6 +38,8 @@ export class ReportService {
 
     for (const type in ReportType) {
       const service = this.reportRecrodsFactory.get(type.toLowerCase());
+
+      await service?.dropAll();
       const seedData: any[] = [...Array(DEFAULT_SEED_TOTAL_ROWS)].map(() =>
         service?.getRandomRecord(),
       );

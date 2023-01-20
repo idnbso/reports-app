@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { TabMenu } from 'primeng/tabmenu';
 import { lastValueFrom, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ReportType } from '../reports/report-type.enum';
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public reportType?: ReportType;
   public reportsTabsItems!: MenuItem[];
   public activeReportTabItem!: MenuItem;
+  @ViewChild('reportsTabMenu') reportsTabMenu!: TabMenu;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -24,6 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private reportsService: ReportsService
   ) {}
+
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -33,7 +36,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(
       this.route.queryParams.subscribe((params: any) => {
-        this.reportType = params.report?.toLowerCase() as ReportType;
+        this.reportType =
+          (params.report?.toLowerCase() as ReportType) ?? ReportType.Customers;
         this.activeReportTabItem =
           this.reportsTabsItems.find(
             (item) => item.label?.toLowerCase() === (this.reportType as String)

@@ -1,4 +1,4 @@
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Injectable, PipeTransform } from '@angular/core';
 import { ReportType } from './report-type.enum';
 
@@ -20,6 +20,7 @@ export class ReportsColumnsService {
       {
         field: 'birthDate',
         header: 'Birth Date',
+        pipe: new DatePipe('en-US'),
       },
       {
         field: 'location',
@@ -28,12 +29,14 @@ export class ReportsColumnsService {
       {
         field: 'totalAmount',
         header: 'Total Amount',
+        pipe: new CurrencyPipe('en-US'),
       },
     ]);
     this.columnsFactory.set(ReportType.Periodic, [
       {
         field: 'date',
         header: 'Date',
+        pipe: new DatePipe('en-US'),
       },
       {
         field: 'quarter',
@@ -42,6 +45,7 @@ export class ReportsColumnsService {
       {
         field: 'totalAmount',
         header: 'Total Amount',
+        pipe: new CurrencyPipe('en-US'),
       },
     ]);
     this.columnsFactory.set(ReportType.Branches, [
@@ -71,10 +75,12 @@ export class ReportsColumnsService {
       {
         field: 'createdAt',
         header: 'Created At',
+        pipe: new DatePipe('en-US'),
       },
       {
         field: 'modifiedAt',
         header: 'Modified At',
+        pipe: new DatePipe('en-US'),
       },
     ]);
   }

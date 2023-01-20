@@ -4,24 +4,26 @@ import { Model } from 'mongoose';
 import { ReportServiceProvider } from '../models/report-service-provider';
 import { ReportType } from '../models/report-type.enum';
 import { ReportDTO } from '../models/report.dto';
-import { Branch, BranchDocument } from './branch.schema';
-import { BranchesRecordDTO } from './branches-record.dto';
+import { Customer, CustomerDocument } from './customer.schema';
+import { CustomersRecordDTO } from './customers-record.dto';
 import { faker } from '@faker-js/faker';
 
 @Injectable()
-export class BranchReportService implements ReportServiceProvider {
+export class CustomersReportService implements ReportServiceProvider {
   constructor(
-    @InjectModel(Branch.name) private branchModel: Model<BranchDocument>,
+    @InjectModel(Customer.name) private customerModel: Model<CustomerDocument>,
   ) {}
 
-  async createMany(records: BranchesRecordDTO[]): Promise<number> {
-    const recordsToSave = records.map((record) => new this.branchModel(record));
-    const result = await this.branchModel.bulkSave(recordsToSave);
+  async createMany(records: CustomersRecordDTO[]): Promise<number> {
+    const recordsToSave = records.map(
+      (record) => new this.customerModel(record),
+    );
+    const result = await this.customerModel.bulkSave(recordsToSave);
     return result.insertedCount;
   }
 
-  async findAll(skipRows: number, pageRows: number): Promise<Branch[]> {
-    return this.branchModel
+  async findAll(skipRows: number, pageRows: number): Promise<Customer[]> {
+    return this.customerModel
       .find({}, { _id: 0 })
       .skip(skipRows)
       .limit(pageRows)
@@ -29,28 +31,34 @@ export class BranchReportService implements ReportServiceProvider {
   }
 
   async countAll(): Promise<number> {
-    return this.branchModel.count().exec();
+    return this.customerModel.count().exec();
+  }
+
+  async dropAll(): Promise<number> {
+    const result = await this.customerModel.deleteMany({}).exec();
+    return result.deletedCount;
   }
 
   async getReport(
     skipRows: number,
     pageRows: number,
-  ): Promise<ReportDTO<BranchesRecordDTO>> {
+  ): Promise<ReportDTO<CustomersRecordDTO>> {
     const [records, totalRecords] = await Promise.all([
       this.findAll(skipRows, pageRows),
       this.countAll(),
     ]);
     return {
-      type: ReportType.Branches,
+      type: ReportType.Customers,
       records,
       totalRecords,
-      title: 'Branches Report',
+      title: 'Customeres Report',
     };
   }
 
-  getRandomRecord(): Branch {
+  getRandomRecord(): Customer {
     return {
       createdAt: faker.date.past(),
+      birthDate: faker.date.birthdate(),
       location: faker.address.country(),
       name: faker.address.cityName(),
       totalAmount: parseFloat(faker.finance.amount()),
