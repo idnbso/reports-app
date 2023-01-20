@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { Injectable, PipeTransform } from '@angular/core';
 import { ReportType } from './report-type.enum';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { ReportType } from './report-type.enum';
 export class ReportsColumnsService {
   private columnsFactory = new Map<
     ReportType,
-    { field: string; header: string }[]
+    { field: string; header: string; pipe?: PipeTransform }[]
   >();
 
   constructor() {
@@ -55,6 +56,7 @@ export class ReportsColumnsService {
       {
         field: 'totalAmount',
         header: 'Total Amount',
+        pipe: new CurrencyPipe('en-US'),
       },
     ]);
     this.columnsFactory.set(ReportType.Invoices, [
@@ -77,9 +79,7 @@ export class ReportsColumnsService {
     ]);
   }
 
-  getColumns(
-    reportType: ReportType
-  ): { field: string; header: string }[] | undefined {
-    return this.columnsFactory.get(reportType);
+  getColumns(reportType: ReportType): { field: string; header: string }[] {
+    return this.columnsFactory.get(reportType) ?? [];
   }
 }

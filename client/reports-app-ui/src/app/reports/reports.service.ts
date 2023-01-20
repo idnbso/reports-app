@@ -22,8 +22,10 @@ export class ReportsService {
     skipRows: number = DEFAULT_SKIP_ROWS,
     pageRows: number = DEFAULT_PAGE_ROWS
   ): Promise<ReportDTO<any>> {
-    const query = `?reportType=${reportType}&skipRows=${skipRows}&pageRows=${pageRows}`;
-    const request = this.http.get(`${this.API_HOST}/report${query}`);
+    const query = `?skipRows=${skipRows}&pageRows=${pageRows}`;
+    const request = this.http.get(
+      `${this.API_HOST}/report/${reportType}${query}`
+    );
 
     return lastValueFrom<any>(request);
   }

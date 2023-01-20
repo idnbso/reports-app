@@ -10,11 +10,6 @@
   [loading]="loading"
   [totalRecords]="totalRecords"
 >
-  <ng-template pTemplate="caption">
-    <div class="flex align-items-center justify-content-between">
-      {{ reportType | titlecase }}
-    </div>
-  </ng-template>
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th *ngFor="let col of columns">
@@ -25,7 +20,9 @@
   <ng-template pTemplate="body" let-record let-columns="columns">
     <tr>
       <td *ngFor="let col of columns">
-        {{ record[col.field] }}
+        {{
+          col.pipe ? col.pipe.transform(record[col.field]) : record[col.field]
+        }}
       </td>
     </tr>
   </ng-template>
