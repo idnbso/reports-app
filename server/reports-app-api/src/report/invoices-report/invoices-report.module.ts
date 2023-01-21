@@ -1,6 +1,11 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Invoice, InvoiceSchema } from './invoices-report.schema';
+import { getModelToken, MongooseModule } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import {
+  Invoice,
+  InvoiceDocument,
+  InvoiceSchema,
+} from './invoices-report.schema';
 import { InvoicesReportService } from './invoices-report.service';
 
 @Module({

@@ -1,4 +1,6 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TableModule } from 'primeng/table';
 
 import { ReportComponent } from './report.component';
 
@@ -8,9 +10,9 @@ describe('ReportComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportComponent ]
-    })
-    .compileComponents();
+      imports: [HttpClientModule, TableModule],
+      declarations: [ReportComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ReportComponent);
     component = fixture.componentInstance;
