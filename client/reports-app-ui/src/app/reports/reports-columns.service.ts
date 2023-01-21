@@ -39,8 +39,9 @@ export class ReportsColumnsService {
         pipe: new DatePipe('en-US'),
       },
       {
-        field: 'quarter',
-        header: 'Quarter',
+        field: 'amount',
+        header: 'Amount',
+        pipe: new CurrencyPipe('en-US'),
       },
       {
         field: 'totalAmount',

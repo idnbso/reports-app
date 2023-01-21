@@ -1,4 +1,4 @@
-import { ReportRecordsDTO } from './report-records';
+import { ReportRecordsDTO } from '../models/report-records';
 
 export interface InvoicesRecordDTO extends ReportRecordsDTO {
   amount: number;

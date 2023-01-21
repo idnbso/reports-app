@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { BranchesReportService } from './branches-report/branches-report.service';
 import { CustomersReportService } from './customers-report/customers-report.service';
+import { InvoicesReportService } from './invoices-report/invoices-report.service';
 import { ReportType } from './models/report-type.enum';
 import { ReportDTO } from './models/report.dto';
+import { PeriodicReportService } from './periodic-report/periodic-report.service';
 
 const DEFAULT_SEED_TOTAL_ROWS = 20;
 
@@ -13,6 +15,8 @@ export class ReportService {
   constructor(
     private branchesReportService: BranchesReportService,
     private customeresReportService: CustomersReportService,
+    private invoicesReportService: InvoicesReportService,
+    private periodicReportService: PeriodicReportService,
   ) {
     this.reportRecrodsFactory.set(
       ReportType.Branches.toLowerCase(),
@@ -21,6 +25,14 @@ export class ReportService {
     this.reportRecrodsFactory.set(
       ReportType.Customers.toLowerCase(),
       this.customeresReportService,
+    );
+    this.reportRecrodsFactory.set(
+      ReportType.Invoices.toLowerCase(),
+      this.invoicesReportService,
+    );
+    this.reportRecrodsFactory.set(
+      ReportType.Periodic.toLowerCase(),
+      this.periodicReportService,
     );
   }
 
