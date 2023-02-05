@@ -10,7 +10,7 @@ const DEFAULT_SEED_TOTAL_ROWS = 20;
 
 @Injectable()
 export class ReportService {
-  private readonly reportRecrodsFactory = new Map<string, any>();
+  private readonly reportRecordsFactory = new Map<string, any>();
 
   constructor(
     private branchesReportService: BranchesReportService,
@@ -18,19 +18,19 @@ export class ReportService {
     private invoicesReportService: InvoicesReportService,
     private periodicReportService: PeriodicReportService,
   ) {
-    this.reportRecrodsFactory.set(
+    this.reportRecordsFactory.set(
       ReportType.Branches.toLowerCase(),
       this.branchesReportService,
     );
-    this.reportRecrodsFactory.set(
+    this.reportRecordsFactory.set(
       ReportType.Customers.toLowerCase(),
       this.customeresReportService,
     );
-    this.reportRecrodsFactory.set(
+    this.reportRecordsFactory.set(
       ReportType.Invoices.toLowerCase(),
       this.invoicesReportService,
     );
-    this.reportRecrodsFactory.set(
+    this.reportRecordsFactory.set(
       ReportType.Periodic.toLowerCase(),
       this.periodicReportService,
     );
@@ -41,7 +41,7 @@ export class ReportService {
     skipRows?: number,
     pageRows?: number,
   ): Promise<ReportDTO<any>> {
-    const service = this.reportRecrodsFactory.get(type.toLowerCase());
+    const service = this.reportRecordsFactory.get(type.toLowerCase());
     return service?.getReport(skipRows, pageRows);
   }
 
@@ -49,7 +49,7 @@ export class ReportService {
     let totalCreatedData = 0;
 
     for (const type in ReportType) {
-      const service = this.reportRecrodsFactory.get(type.toLowerCase());
+      const service = this.reportRecordsFactory.get(type.toLowerCase());
 
       await service?.dropAll();
       const seedData: any[] = [...Array(DEFAULT_SEED_TOTAL_ROWS)].map(() =>
